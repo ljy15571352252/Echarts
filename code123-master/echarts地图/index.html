@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //  插入排序
+        var arr = [1,2,3,7,6,4,5,6]
+        Array.prototype.sort = function(){
+            var _self = this ;
+            for(var i = 0 ; i < _self.length ; i++ ){
+                for(var j = i ; j > 0 ; j-- ){
+                    if(_self[j] < _self[j-1]){
+                        var pre = _self[j]
+                        _self[j] = _self[j-1]
+                        _self[j-1] = pre
+                    }
+                    }  
+            }
+            return _self
+    }       
+    console.log(arr.sort())
+
+    //  冒泡排序
+            /**
+         * @param {number[]} nums
+         * @return {number}
+         */
+        var missingNumber = function(nums) {
+            let n = nums.length;
+            // 第一步，计算给出数组的总和
+            let sum = nums.reduce((result, item) => {
+                return result + item
+            })
+            // 第二步，计算假设插入数据后有序完整数组的总和
+            let total = (n+1) * n / 2
+            // 第三步，计算差值
+            return total - sum
+        };
+       console.log( missingNumber([1,2,3,5,6,9,8,7]))
+    </script> 
+</body>
+</html>

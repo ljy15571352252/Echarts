@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset='utf-8'>
+  <link rel="shortcut icon" href="./image/logo.jpg">
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>怎么让ECharts的提示框tooltip自动轮播?</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+
+<body>
+  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+  <div id="myCharts" style="width: 600px;height:400px;"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/4.8.0/echarts-en.min.js"></script>
+  <script src="./libs/tooltip-auto-show.js"></script>
+  <script type="text/javascript">
+    // 用于清除定时器
+    var tootipTimer = null;
+    // X轴数据
+    var xAxisData = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+    // 需要渲染的series数据
+    var seriesData = [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3];
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('myCharts'));
+    // 指定图表的配置项和数据
+    var chartOption = {
+      tooltip: {
+        trigger: 'axis'
+      },
+      xAxis: [
+        {
+          type: 'category',
+          data: xAxisData,
+          axisPointer: {
+            type: 'shadow'
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          name: '降水量',
+          axisLabel: {
+            formatter: '{value} ml'
+          }
+        },
+      ],
+      series: [
+        {
+          name: '蒸发量',
+          type: 'bar',
+          itemStyle: {
+            // 柱状图的颜色，渐变色
+            color: new echarts.graphic.LinearGradient(
+              0, 0, 0, 1,
+              [
+                { offset: 0, color: '#83bff6' },
+                { offset: 0.5, color: '#188df0' },
+                { offset: 1, color: '#188df0' }
+              ]
+            )
+          },
+          data: seriesData
+        },
+      ]
+    };
+    // 使用刚指定的配置项和数据显示图表
+    myChart.setOption(chartOption);
+    // 可调用clearLoop方法，清除定时器
+    tootipTimer && tootipTimer.clearLoop();
+    tootipTimer = null;
+    // 调用轮播的方法
+    tootipTimer = tools.loopShowTooltip(myChart, chartOption, {
+      interval: 1000, // 轮播间隔时间
+      loopSeries: true // 是否开启轮播循环
+    });
+  </script>
+</body>
+
+</html>
